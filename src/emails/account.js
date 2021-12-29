@@ -12,12 +12,12 @@ const sendWelcEmail = (email, name) => {
             text: `Welcome! ${name}. Let me know what are you up to`
 
 
-        })
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
+        // })
+        // .then(() => {
+        //     console.log('Email sent')
+        // })
+        // .catch((error) => {
+        //     console.error(error)
         })
 }
 
@@ -31,12 +31,12 @@ const sendCancleEmail = (email, name) => {
             text: `I am sorry that I need to close your account ${name}.`
 
 
-        })
-        .then(() => {
-            console.log('Email sent')
-        })
-        .catch((error) => {
-            console.error(error)
+        // })
+        // .then(() => {
+        //     console.log('Email sent')
+        // })
+        // .catch((error) => {
+        //     console.error(error)
         })
 }
 

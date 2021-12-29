@@ -97,7 +97,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
 // Virtual Task in User model
 userSchema.virtual('userTask', {
-    ref: 'tasks', // refer to Model's name 'Task'
+    ref: 'tasks', // refer to Schema "tasks"
     localField:'_id',
     foreignField: 'owner'
 })

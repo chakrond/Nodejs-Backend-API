@@ -17,6 +17,8 @@ router.post('/tasks', auth, async (req, res) => {
         owner: req.userInfo._id
     })
 
+    // const task = new Task(Object.assign( req.body, {owner: req.userInfo._id} ))
+
     try {
         await task.save()
         res.status(201).send(task)

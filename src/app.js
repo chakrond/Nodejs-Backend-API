@@ -1,7 +1,15 @@
-const app        = require('./app')
+require('./db/mongoose')
+const express = require('express')
+const taskRouter = require('./routers/task')
+const userRouter = require('./routers/user')
 
 
-const port = process.env.PORT
+const app = express()
+
+app.use(express.json())
+app.use(userRouter)
+app.use(taskRouter)
+
 
 // Disable HTTP Methods
 // app.use((req, res, next) => {
@@ -20,8 +28,4 @@ const port = process.env.PORT
 // })
 
 
-app.listen(port, () => {
-    console.log('Server is up on port ' + port)
-})
-
-
+module.exports = app
