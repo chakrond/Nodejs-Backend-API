@@ -2,6 +2,7 @@ require('./db/mongoose')
 const express = require('express')
 const taskRouter = require('./routers/task')
 const userRouter = require('./routers/user')
+const dataRouter = require('./routers/data')
 
 
 const app = express()
@@ -9,6 +10,9 @@ const app = express()
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
+app.use(dataRouter)
+
+
 
 
 // Disable HTTP Methods
