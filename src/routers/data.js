@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('../middleware/auth')
 const Data = require('../models/data')
+const RTData = require('../models/RTdata')
 const router = new express.Router()
 
 //********************************************//
@@ -36,6 +37,44 @@ router.post('/data', auth, async (req, res) => {
     }
 
 })
+
+
+
+router.patch('/data/real', auth, async (req, res) => {
+
+    try {
+
+        const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id }, 
+            {
+                recTime: req.body.recTime,
+                Humidity: req.body.Humidity,
+                Temperature: req.body.Temperature
+
+            }, {
+            new: true
+        })
+
+        if (!VData) {
+            const data = new RTData({
+                ...req.body,
+                owner: req.userInfo._id
+            })
+            await data.save()
+            res.status(201).send(data)
+        }
+
+        await VData.save()
+        // console.log("Finding: " + VData)
+        return res.status(201).send(VData)
+        
+
+    } catch (e) {
+        res.status(400).send(e)
+    }
+
+})
+
+
 
 
 module.exports = router
