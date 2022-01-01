@@ -60,7 +60,7 @@ router.patch('/data/real', auth, async (req, res) => {
                 owner: req.userInfo._id
             })
             await data.save()
-            res.status(201).send(data)
+            res.send(data)
         }
 
         await VData.save()
