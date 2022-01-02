@@ -165,4 +165,22 @@ router.get('/data/date', auth, async (req, res) => {
     }
 })
 
+
+router.get('/data/real', auth, async (req, res) => {
+
+    try {
+
+        const VData = await RTData.find({ owner: req.userInfo._id })
+
+        if (!VData) {
+            throw new Error()
+        }
+
+        return res.status(200).send(VData)
+
+    } catch (e) {
+        res.status(404).send(e)
+    }
+})
+
 module.exports = router
