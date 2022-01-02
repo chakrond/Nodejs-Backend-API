@@ -39,12 +39,11 @@ router.post('/data', auth, async (req, res) => {
 })
 
 
-
 router.patch('/data/real', auth, async (req, res) => {
 
     try {
 
-        const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id }, 
+        const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id },
             {
                 recTime: req.body.recTime,
                 Humidity: req.body.Humidity,
@@ -66,7 +65,7 @@ router.patch('/data/real', auth, async (req, res) => {
         await VData.save()
         // console.log("Finding: " + VData)
         return res.status(201).send(VData)
-        
+
 
     } catch (e) {
         res.status(400).send(e)
@@ -75,6 +74,95 @@ router.patch('/data/real', auth, async (req, res) => {
 })
 
 
+router.get('/data', auth, async (req, res) => {
 
+    const sort = {}
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] == 'desc' ? -1 : 1 // if (desc) true, then parts[0] == -1 (descending)
+    }
+
+    try {
+
+        // Virtual finding task by its owner
+        await req.userInfo.populate({
+
+            path: 'userData',
+            options: {
+
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+                sort
+            }
+
+        })
+
+        res.status(200).send(req.userInfo.userData)
+
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+
+router.get('/data/date', auth, async (req, res) => {
+
+    try {
+
+        if (req.query.by) {
+
+            const data = await Data.find({ recDate: new Date(req.query.by) })
+
+            if (!data) {
+                return res.status(404).send()
+            }
+
+            res.status(200).send(data)
+        }
+
+        if (req.query.range) {
+
+            const parts = req.query.range.split(':')
+
+            const data = await Data.find({ recDate: { $gte: new Date(parts[0]), $lte: new Date(parts[1]) } })
+
+            if (!data) {
+                return res.status(404).send()
+            }
+
+            res.status(200).send(data)
+        }
+
+        if (req.query.month) {
+
+            const parts = req.query.month
+
+            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01'), $lte: new Date(parts + '-31') } })
+
+            if (!data) {
+                return res.status(404).send()
+            }
+
+            res.status(200).send(data)
+        }
+
+        if (req.query.year) {
+
+            const parts = req.query.year
+
+            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01-01'), $lte: new Date(parts + '-12-31') } })
+
+            if (!data) {
+                return res.status(404).send()
+            }
+
+            res.status(200).send(data)
+        }
+
+    } catch (e) {
+        res.status(500).send()
+    }
+})
 
 module.exports = router

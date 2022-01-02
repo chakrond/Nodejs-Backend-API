@@ -52,6 +52,9 @@ const userSchema = new mongoose.Schema({
         token: {
             type: String,
             require: true
+        },
+        createdAt: {
+            type: Date, default: Date.now
         }
     }],
     avatar: {
@@ -99,6 +102,12 @@ userSchema.statics.findByCredentials = async (email, password) => {
 userSchema.virtual('userTask', {
     ref: 'tasks', // refer to Schema "tasks"
     localField:'_id',
+    foreignField: 'owner'
+})
+
+userSchema.virtual('userData', {
+    ref: 'data',
+    localField: '_id',
     foreignField: 'owner'
 })
 
