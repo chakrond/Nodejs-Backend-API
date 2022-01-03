@@ -1,9 +1,9 @@
-const express   = require('express')
-const multer    = require('multer')
-const sharp     = require('sharp')
-const User      = require('../models/user')
-const auth      = require('../middleware/auth')
-const router    = new express.Router()
+const express = require('express')
+const multer = require('multer')
+const sharp = require('sharp')
+const User = require('../models/user')
+const auth = require('../middleware/auth')
+const router = new express.Router()
 const { sendWelcEmail, sendCancleEmail } = require('../emails/account')
 
 //********************************************************//
@@ -18,7 +18,8 @@ router.post('/users', async (req, res) => {
 
         await user.save()
         sendWelcEmail(user.email, user.name)
-        const token = await user.generateAuthToken()
+        const agent = req.header('User-Agent')
+        const token = await user.generateAuthToken(agent)
 
         res.status(201).send({ msg: 'Create account successfully', user, token })
 
@@ -39,10 +40,23 @@ router.post('/users/login', async (req, res) => {
 
     try {
 
+        const reqAgent = req.header('User-Agent')
         const user = await User.findByCredentials(req.body.email, req.body.password)
-        const token = await user.generateAuthToken()
+        const savedToken = await user.tokensArray.find((a) => {
+            if (!a.token){
+                throw new Error()
+            }
+            return a.token.userAgent == reqAgent
+        })
 
-        res.status(200).send({ msg: 'Login successfully', user, token })
+        if (!savedToken) {
+
+            const token = await user.generateAuthToken(reqAgent)
+            return res.status(200).send({ msg: 'Login successfully', user, token })
+        }
+
+        const keyToken = savedToken.token.key
+        res.status(200).send({ msg: 'Login successfully', user, token: keyToken})
 
     } catch (e) {
         res.status(400).send()
@@ -57,7 +71,7 @@ router.post('/users/logout', auth, async (req, res) => {
     try {
 
         req.userInfo.tokensArray = req.userInfo.tokensArray.filter((t) => {
-            return t.token !== req.tokenInfo
+            return t.token.key !== req.tokenInfo
         })
 
         await req.userInfo.save()
@@ -209,7 +223,7 @@ const upload = multer({
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
 
-    const buffer = await sharp(req.file.buffer).resize({ width: 250, height:250 }).png().toBuffer()
+    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
 
     req.userInfo.avatar = buffer
     await req.userInfo.save()

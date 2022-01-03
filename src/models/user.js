@@ -1,8 +1,9 @@
-const mongoose  = require('mongoose')
+const mongoose = require('mongoose')
 const validator = require('validator')
-const bcrypt    = require('bcryptjs')
-const jwt       = require('jsonwebtoken')
-const Task      = require('../models/task')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const Task = require('../models/task')
+const Data = require('../models/data')
 
 const userSchema = new mongoose.Schema({
 
@@ -50,28 +51,35 @@ const userSchema = new mongoose.Schema({
 
     tokensArray: [{
         token: {
-            type: String,
-            require: true
-        },
-        createdAt: {
-            type: Date, default: Date.now
+            key: {
+                type: String,
+                require: true,
+            },
+            userAgent: {
+                type: String,
+                require: true
+            },
+            createdAt: {
+                type: Date, default: Date.now
+            }
         }
     }],
     avatar: {
         type: Buffer
-    }   
+    }
 }, {
     timestamps: true
 })
 
 // Token
-userSchema.methods.generateAuthToken = async function () {
+userSchema.methods.generateAuthToken = async function (reqAgent) {
 
-    const user       = this
+    const user = this
     const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
-    user.tokensArray = user.tokensArray.concat( {'token': token} )
+    user.tokensArray = user.tokensArray.concat({ 'token.key': token, 'token.userAgent': reqAgent })
+
     await user.save()
-   
+
     return token
 }
 
@@ -101,7 +109,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 // Virtual Task in User model
 userSchema.virtual('userTask', {
     ref: 'tasks', // refer to Schema "tasks"
-    localField:'_id',
+    localField: '_id',
     foreignField: 'owner'
 })
 
@@ -116,12 +124,12 @@ userSchema.virtual('userData', {
 // Cnntrol sending response
 userSchema.methods.toJSON = function () {
 
-    const user       = this
+    const user = this
     const userObject = user.toObject()
 
-    const list       = ['password', 'tokensArray', 'avatar']
-    list.forEach( (e) => { delete userObject[e] })
-    
+    const list = ['password', 'tokensArray', 'avatar']
+    list.forEach((e) => { delete userObject[e] })
+
     return userObject
 }
 
@@ -133,11 +141,11 @@ userSchema.pre('save', async function (next) {
 
     // console.log(this)
     // console.log('userSchema.pre: Before save')
-    
-    if(user.isModified('password')) {
+
+    if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
-    
+
     next()
 })
 
@@ -146,7 +154,8 @@ userSchema.pre('remove', async function (next) {
 
     const user = this
 
-    await Task.deleteMany({owner: user._id})
+    await Task.deleteMany({ owner: user._id })
+    await Data.deleteMany({ owner: user._id })
     next()
 
 })
