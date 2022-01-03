@@ -170,12 +170,13 @@ router.get('/data/real', auth, async (req, res) => {
 
     try {
 
-        const VData = await RTData.find({ owner: req.userInfo._id })
+        const VData = await RTData.findOne({ owner: req.userInfo._id })
 
         if (!VData) {
             throw new Error()
         }
 
+        // console.log(VData)
         return res.status(200).send(VData)
 
     } catch (e) {
