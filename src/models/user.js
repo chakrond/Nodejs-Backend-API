@@ -113,6 +113,7 @@ userSchema.virtual('userTask', {
     foreignField: 'owner'
 })
 
+// Virtual Data in User model
 userSchema.virtual('userData', {
     ref: 'data',
     localField: '_id',

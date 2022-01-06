@@ -19,15 +19,43 @@ const port = process.env.PORT
 
 // })
 
-// const User = require('./models/user')
-// const jwt = require('jsonwebtoken')
+// const Data = require('./models/data')
+
 // const test = async () => {
 
+//     const req = '2022-01-01:2022-01-02'
+
 //     try {
-//         const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWQyYTM0ZDZlYWQ4Y2I3ZDBmMWRhYTUiLCJpYXQiOjE2NDExOTQzMTd9.Q5rbxuVGiBiWU7hsAGb2S2FtA1xCVnOy35tU88bBAE4"
-//         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-//         const user = await User.findOne({ _id: decoded._id, 'tokensArray.token.key': token, 'tokensArray.token.userAgent': 'PostmanRuntime/7.28.4' })
-//         console.log(decoded._id)
+//         const parts = req.split(':')
+
+//         const data = await Data.find({ recDate: { $gte: new Date(parts[0]), $lte: new Date(parts[1]) } })
+
+//         if (!data) {
+//             return console.log('Not Found')
+//         }
+
+//         // Map data
+//         const example = data[0].dataArray[0]
+//         const datajson = JSON.parse(JSON.stringify(example))
+//         delete datajson._id
+//         const keyNames = Object.keys(datajson)
+
+//         // Create nested array
+//         const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+
+//         for (let i = 0; i < keyNames.length; i++) {
+
+//             data.flatMap((a) => {
+//                 return a.dataArray.map((b) => {
+//                     return combArray[i].push(b[keyNames[i]])
+//                 })
+//             })
+//         }
+
+//         // splice insert keynames at index 0
+//         combArray.splice(0, 0, keyNames)
+
+//         console.log(combArray)
 
 //     } catch (e) {
 //         console.log(e)

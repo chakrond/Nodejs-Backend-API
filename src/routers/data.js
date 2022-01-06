@@ -112,56 +112,140 @@ router.get('/data/date', auth, async (req, res) => {
 
         if (req.query.by) {
 
-            const data = await Data.find({ recDate: new Date(req.query.by) })
+            const data = await Data.find({ recDate: new Date(req.query.by), owner: req.userInfo._id })
 
             if (!data) {
                 return res.status(404).send()
             }
 
-            res.status(200).send(data)
+            // Map data
+            const example = data[0].dataArray[0]
+            const datajson = JSON.parse(JSON.stringify(example))
+            delete datajson._id
+            const keyNames = Object.keys(datajson)
+
+            // Create nested array
+            const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+
+            for (let i = 0; i < keyNames.length; i++) {
+
+                data.map((a) => {
+                    return a.dataArray.map((b) => {
+                        return combArray[i].push(b[keyNames[i]])
+                    })
+                })
+            }
+
+            // splice remove zero at index 0
+            combArray.splice(0, 0, keyNames)
+
+            res.status(200).send(combArray)
         }
 
         if (req.query.range) {
 
             const parts = req.query.range.split(':')
 
-            const data = await Data.find({ recDate: { $gte: new Date(parts[0]), $lte: new Date(parts[1]) } })
+            const data = await Data.find({ recDate: { $gte: new Date(parts[0]), $lte: new Date(parts[1]) }, owner: req.userInfo._id })
 
             if (!data) {
                 return res.status(404).send()
             }
 
-            res.status(200).send(data)
+            // Map data
+            const example = data[0].dataArray[0]
+            const datajson = JSON.parse(JSON.stringify(example))
+            delete datajson._id
+            const keyNames = Object.keys(datajson)
+
+            // Create nested array
+            const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+
+            for (let i = 0; i < keyNames.length; i++) {
+
+                data.flatMap((a) => {
+                    return a.dataArray.map((b) => {
+                        return combArray[i].push(b[keyNames[i]])
+                    })
+                })
+            }
+
+            // splice insert keynames at index 0
+            combArray.splice(0, 0, keyNames)
+
+            res.status(200).send(combArray)
         }
 
         if (req.query.month) {
 
             const parts = req.query.month
 
-            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01'), $lte: new Date(parts + '-31') } })
+            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01'), $lte: new Date(parts + '-31') }, owner: req.userInfo._id })
 
             if (!data) {
                 return res.status(404).send()
             }
 
-            res.status(200).send(data)
+            // Map data
+            const example = data[0].dataArray[0]
+            const datajson = JSON.parse(JSON.stringify(example))
+            delete datajson._id
+            const keyNames = Object.keys(datajson)
+
+            // Create nested array
+            const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+
+            for (let i = 0; i < keyNames.length; i++) {
+
+                data.flatMap((a) => {
+                    return a.dataArray.map((b) => {
+                        return combArray[i].push(b[keyNames[i]])
+                    })
+                })
+            }
+
+            // splice insert keynames at index 0
+            combArray.splice(0, 0, keyNames)
+
+            res.status(200).send(combArray)
         }
 
         if (req.query.year) {
 
             const parts = req.query.year
 
-            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01-01'), $lte: new Date(parts + '-12-31') } })
+            const data = await Data.find({ recDate: { $gte: new Date(parts + '-01-01'), $lte: new Date(parts + '-12-31') }, owner: req.userInfo._id })
 
             if (!data) {
                 return res.status(404).send()
             }
 
-            res.status(200).send(data)
+            // Map data
+            const example = data[0].dataArray[0]
+            const datajson = JSON.parse(JSON.stringify(example))
+            delete datajson._id
+            const keyNames = Object.keys(datajson)
+
+            // Create nested array
+            const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+
+            for (let i = 0; i < keyNames.length; i++) {
+
+                data.flatMap((a) => {
+                    return a.dataArray.map((b) => {
+                        return combArray[i].push(b[keyNames[i]])
+                    })
+                })
+            }
+
+            // splice insert keynames at index 0
+            combArray.splice(0, 0, keyNames)
+
+            res.status(200).send(combArray)
         }
 
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 })
 
