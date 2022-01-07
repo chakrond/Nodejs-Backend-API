@@ -126,20 +126,20 @@ router.get('/data/date', auth, async (req, res) => {
 
             // Create nested array
             const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+            const obj = {}
 
             for (let i = 0; i < keyNames.length; i++) {
 
-                data.map((a) => {
+                data.flatMap((a) => {
                     return a.dataArray.map((b) => {
                         return combArray[i].push(b[keyNames[i]])
                     })
                 })
+
+                Object.assign(obj, { [keyNames[i]]: combArray[i] })
             }
 
-            // splice remove zero at index 0
-            combArray.splice(0, 0, keyNames)
-
-            res.status(200).send(combArray)
+            res.status(200).send(obj)
         }
 
         if (req.query.range) {
@@ -160,6 +160,7 @@ router.get('/data/date', auth, async (req, res) => {
 
             // Create nested array
             const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+            const obj = {}
 
             for (let i = 0; i < keyNames.length; i++) {
 
@@ -168,12 +169,11 @@ router.get('/data/date', auth, async (req, res) => {
                         return combArray[i].push(b[keyNames[i]])
                     })
                 })
+
+                Object.assign(obj, { [keyNames[i]]: combArray[i] })
             }
 
-            // splice insert keynames at index 0
-            combArray.splice(0, 0, keyNames)
-
-            res.status(200).send(combArray)
+            res.status(200).send(obj)
         }
 
         if (req.query.month) {
@@ -194,6 +194,7 @@ router.get('/data/date', auth, async (req, res) => {
 
             // Create nested array
             const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+            const obj = {}
 
             for (let i = 0; i < keyNames.length; i++) {
 
@@ -202,12 +203,11 @@ router.get('/data/date', auth, async (req, res) => {
                         return combArray[i].push(b[keyNames[i]])
                     })
                 })
+
+                Object.assign(obj, { [keyNames[i]]: combArray[i] })
             }
 
-            // splice insert keynames at index 0
-            combArray.splice(0, 0, keyNames)
-
-            res.status(200).send(combArray)
+            res.status(200).send(obj)
         }
 
         if (req.query.year) {
@@ -228,6 +228,7 @@ router.get('/data/date', auth, async (req, res) => {
 
             // Create nested array
             const combArray = Array(keyNames.length).fill().map(() => Array()) // Optional: let arr = Array.from(Array(m), () => new Array(n));
+            const obj = {}
 
             for (let i = 0; i < keyNames.length; i++) {
 
@@ -236,12 +237,11 @@ router.get('/data/date', auth, async (req, res) => {
                         return combArray[i].push(b[keyNames[i]])
                     })
                 })
+
+                Object.assign(obj, { [keyNames[i]]: combArray[i] })
             }
 
-            // splice insert keynames at index 0
-            combArray.splice(0, 0, keyNames)
-
-            res.status(200).send(combArray)
+            res.status(200).send(obj)
         }
 
     } catch (e) {
