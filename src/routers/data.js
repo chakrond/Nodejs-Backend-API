@@ -30,7 +30,7 @@ router.post('/data', auth, async (req, res) => {
         })
 
         await data.save()
-        res.status(201).send(data)
+        res.status(201) //.send(data) for speedup loop in Arduino send only status
 
     } catch (e) {
         res.status(400).send(e)
@@ -64,7 +64,7 @@ router.patch('/data/real', auth, async (req, res) => {
 
         await VData.save()
         // console.log("Finding: " + VData)
-        return res.status(201).send(VData)
+        return res.status(201) //.send(VData) for speedup loop in Arduino send only status
 
 
     } catch (e) {
