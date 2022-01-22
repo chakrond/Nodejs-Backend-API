@@ -59,12 +59,12 @@ router.patch('/data/real', auth, async (req, res) => {
                 owner: req.userInfo._id
             })
             await data.save()
-            res.send(data)
+            res.status(201).send()
         }
 
         await VData.save()
         // console.log("Finding: " + VData)
-        return res.status(201) //.send(VData) for speedup loop in Arduino send only status
+        return res.status(201).send() //.send(VData) for speedup loop in Arduino send only status
 
 
     } catch (e) {
