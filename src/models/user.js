@@ -60,7 +60,8 @@ const userSchema = new mongoose.Schema({
                 require: true
             },
             createdAt: {
-                type: Date, default: Date.now
+                type: Date, 
+                default: Date.now
             }
         }
     }],

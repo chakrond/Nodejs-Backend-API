@@ -72,6 +72,7 @@ router.get('/tasks', auth, async (req, res) => {
         res.status(200).send(req.userInfo.userTask)
 
     } catch (e) {
+
         res.status(500).send()
     }
 

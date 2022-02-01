@@ -17,12 +17,13 @@ const dataSchema = new mongoose.Schema({
         Humidity: {
             type: Number,
             required: true,
-            trim: true
+            trim: true,
         },
         Temperature: {
             type: Number,
             required: true,
-            trim: true
+            trim: true,
+            set: n => n.toFixed(1)
         }
     }],
     owner: {

@@ -6,13 +6,11 @@ const dataRouter = require('./routers/data')
 
 
 const app = express()
-
 app.use(express.json())
-app.use(userRouter)
+
 app.use(taskRouter)
 app.use(dataRouter)
-
-
+app.use(userRouter)
 
 
 // Disable HTTP Methods

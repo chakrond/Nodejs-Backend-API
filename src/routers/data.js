@@ -3,6 +3,7 @@ const auth = require('../middleware/auth')
 const Data = require('../models/data')
 const RTData = require('../models/RTdata')
 const router = new express.Router()
+const Errorlogging = require('../utils/errorlogging')
 
 //********************************************//
 //-----------------Data Method----------------//
@@ -21,7 +22,7 @@ router.post('/data', auth, async (req, res) => {
                 'Temperature': req.body.dataArray[0].Temperature
             })
             await VData.save()
-            return res.status(201).send(VData)
+            return res.status(201) // .send(VData)
         }
 
         const data = new Data({
@@ -33,6 +34,7 @@ router.post('/data', auth, async (req, res) => {
         res.status(201) //.send(data) for speedup loop in Arduino send only status
 
     } catch (e) {
+        Errorlogging(req, res)
         res.status(400).send(e)
     }
 
