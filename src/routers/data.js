@@ -2,7 +2,6 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const Data = require('../models/data')
 const RTData = require('../models/RTdata')
-const Errorlog = require('../models/errorlog')
 const router = new express.Router()
 const Errorlogging = require('../utils/errorlogging')
 
@@ -23,7 +22,7 @@ router.post('/data', auth, async (req, res) => {
                 'Temperature': req.body.dataArray[0].Temperature
             })
             await VData.save()
-            return res.status(201) // .send(VData)
+            return res.status(201).send()
         }
 
         const data = new Data({
