@@ -16,7 +16,8 @@ const RTdataSchema = new mongoose.Schema({
     Temperature: {
         type: Number,
         required: true,
-        trim: true
+        trim: true,
+        set: n => n.toFixed(1)
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

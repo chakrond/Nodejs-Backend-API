@@ -2,6 +2,7 @@ const express = require('express')
 const auth = require('../middleware/auth')
 const Data = require('../models/data')
 const RTData = require('../models/RTdata')
+const Errorlog = require('../models/errorlog')
 const router = new express.Router()
 const Errorlogging = require('../utils/errorlogging')
 
@@ -269,5 +270,15 @@ router.get('/data/real', auth, async (req, res) => {
         res.status(404).send(e)
     }
 })
+
+router.get('/data/errorlog', async (req, res) => {
+
+    if (req.query.email && req.query.password) {
+
+        res.redirect('/users/login')
+
+    }
+})
+
 
 module.exports = router

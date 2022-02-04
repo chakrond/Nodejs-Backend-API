@@ -15,7 +15,7 @@ const ErrorlogSchema = new mongoose.Schema({
     logInfo: [{
         logTime: {
             type: Date,
-            required: true,
+            default: new Date(Date.now() + (7 * 60 * 60 * 1000)),
         },
         ResHeader: {
             type: String,

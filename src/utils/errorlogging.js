@@ -9,7 +9,6 @@ const Errorlogging = async (req, res) => {
     if (LData) {
 
         LData.logInfo = await LData.logInfo.concat({
-            logTime: Date.now(),
             ResHeader: JSON.stringify(res._header),
             ReqHeader: JSON.stringify(req.headers),
             ReqBody: JSON.stringify(req.body)
@@ -25,7 +24,6 @@ const Errorlogging = async (req, res) => {
         })
 
         log.logInfo = await log.logInfo.concat({
-            logTime: Date.now(),
             ResHeader: JSON.stringify(res._header),
             ReqHeader: JSON.stringify(req.headers),
             ReqBody: JSON.stringify(req.body)
