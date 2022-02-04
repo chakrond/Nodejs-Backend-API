@@ -23,7 +23,7 @@ const dataSchema = new mongoose.Schema({
             type: Number,
             required: true,
             trim: true,
-            // set: n => n.toFixed(1)
+            set: n => n.toFixed(1)
         }
     }],
     owner: {
