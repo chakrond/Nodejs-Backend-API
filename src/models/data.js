@@ -17,7 +17,7 @@ const dataSchema = new mongoose.Schema({
         Humidity: {
             type: Number,
             required: true,
-            trim: true,
+            trim: true
         },
         Temperature: {
             type: Number,
