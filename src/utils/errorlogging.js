@@ -3,32 +3,37 @@ const converTime = require('../utils/convertTime')
 
 const Errorlogging = async (req, res) => {
 
-    const Datestring = converTime(7)
-    const LData = await Errorlog.findOne({ logDate: Datestring, owner: req.userInfo._id })
+    try {
 
-    if (LData) {
+        const Datestring = converTime(7)
+        const LData = await Errorlog.findOne({ logDate: Datestring, owner: req.userInfo._id })
 
-        LData.logInfo = await LData.logInfo.concat({
-            ResHeader: JSON.stringify(res._header),
-            ReqHeader: JSON.stringify(req.headers),
-            ReqBody: JSON.stringify(req.body)
-        })
+        if (LData) {
 
-        await LData.save()
+            LData.logInfo = await LData.logInfo.concat({
+                ResHeader: JSON.stringify(res._header),
+                ReqHeader: JSON.stringify(req.headers),
+                ReqBody: JSON.stringify(req.body)
+            })
 
-    } else {
+            await LData.save()
 
-        const log = new Errorlog({
-            owner: req.userInfo._id
-        })
+        } else {
 
-        log.logInfo = await log.logInfo.concat({
-            ResHeader: JSON.stringify(res._header),
-            ReqHeader: JSON.stringify(req.headers),
-            ReqBody: JSON.stringify(req.body)
-        })
+            const log = new Errorlog({
+                owner: req.userInfo._id
+            })
 
-        await log.save()
+            log.logInfo = await log.logInfo.concat({
+                ResHeader: JSON.stringify(res._header),
+                ReqHeader: JSON.stringify(req.headers),
+                ReqBody: JSON.stringify(req.body)
+            })
+
+            await log.save()
+        }
+    } catch (e) {
+        
     }
 }
 
