@@ -1,28 +1,17 @@
 const mongoose = require('mongoose')
-const validator = require('validator')
 
 const dataSchema = new mongoose.Schema({
 
     recDate: {
-        type: String,
+        type: Date,
         required: true,
         trim: true,
-        validate(value) {
-            if (!validator.isDate(value)) {
-                throw new Error('Date invalid')
-            }
-        }
     },
     dataArray: [{
         recTime: {
-            type: String,
+            type: Date,
             required: true,
             trim: true,
-            validate(value) {
-                if (!validator.isDate(value)) {
-                    throw new Error('Date invalid')
-                }
-            }
         },
         Humidity: {
             type: Number,
