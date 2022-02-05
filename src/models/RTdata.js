@@ -4,9 +4,14 @@ const mongoose = require('mongoose')
 const RTdataSchema = new mongoose.Schema({
 
     recTime: {
-        type: Date,
+        type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate(value) {
+            if (!validator.isDate(value)) {
+                throw new Error('Date invalid')
+            }
+        }
     },
     Humidity: {
         type: Number,

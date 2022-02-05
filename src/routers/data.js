@@ -34,7 +34,7 @@ router.post('/data', auth, async (req, res) => {
         res.status(201).send() // for speedup loop in Arduino send only status
 
     } catch (e) {
-        // Errorlogging(req, res)
+        Errorlogging(req, res)
         res.status(400).send(e)
     }
 

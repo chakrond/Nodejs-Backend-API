@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const converTime = require('../utils/convertTime')
 
 const ErrorlogSchema = new mongoose.Schema({
     owner: {
@@ -8,14 +8,13 @@ const ErrorlogSchema = new mongoose.Schema({
         ref: 'users' // Create reference to 'users' schema
     },
     logDate: {
-        type: Date,
-        required: true,
-        trim: true
+        type: String,
+        default: converTime(7)
     }, 
     logInfo: [{
         logTime: {
             type: Date,
-            default: new Date(Date.now() + (7 * 60 * 60 * 1000)),
+            default: new Date(Date.now() + (7*60*60*1000))
         },
         ResHeader: {
             type: String,

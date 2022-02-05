@@ -1,18 +1,27 @@
 const mongoose = require('mongoose')
-// const { sendCancleEmail } = require('../emails/account')
 
 const dataSchema = new mongoose.Schema({
 
     recDate: {
-        type: Date,
+        type: String,
         required: true,
-        trim: true
+        trim: true,
+        validate(value) {
+            if (!validator.isDate(value)) {
+                throw new Error('Date invalid')
+            }
+        }
     },
     dataArray: [{
         recTime: {
-            type: Date,
+            type: String,
             required: true,
-            trim: true
+            trim: true,
+            validate(value) {
+                if (!validator.isDate(value)) {
+                    throw new Error('Date invalid')
+                }
+            }
         },
         Humidity: {
             type: Number,
