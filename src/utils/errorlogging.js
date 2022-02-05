@@ -1,7 +1,9 @@
 const Errorlog = require('../models/errorlog')
+const converTime = require('../utils/convertTime')
 
 const Errorlogging = async (req, res) => {
 
+    const Datestring = converTime(7)
     const LData = await Errorlog.findOne({ logDate: Datestring, owner: req.userInfo._id })
 
     if (LData) {
