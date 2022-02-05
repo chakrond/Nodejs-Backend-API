@@ -11,10 +11,10 @@ const Errorlogging = require('../utils/errorlogging')
 
 router.post('/data', auth, async (req, res) => {
 
-    const VData = await Data.findOne({ recDate: req.body.recDate, owner: req.userInfo._id })
-    // console.log("Finding" + VData.dataArray)
     try {
 
+        const VData = await Data.findOne({ recDate: req.body.recDate, owner: req.userInfo._id })
+        
         if (VData) {
             VData.dataArray = await VData.dataArray.concat({
                 'recTime': req.body.dataArray[0].recTime,
