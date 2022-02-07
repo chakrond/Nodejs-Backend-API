@@ -5,7 +5,7 @@ const Errorlogging = async (req, res) => {
 
     try {
 
-        const Datestring = converTime(7)
+        const Datestring = converTime(7) // this format 2022-02-07
         const LData = await Errorlog.findOne({ logDate: Datestring, owner: req.userInfo._id })
 
         if (LData) {
