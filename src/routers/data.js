@@ -6,9 +6,9 @@ const router = new express.Router()
 const Errorlogging = require('../utils/errorlogging')
 const converTime = require('../utils/convertTime')
 
-//********************************************//
-//-----------------Data Method----------------//
-//********************************************//
+//*********************************************//
+//-----------------Data Method-----------------//
+//*********************************************//
 
 router.post('/data', auth, async (req, res) => {
 
