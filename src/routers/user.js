@@ -4,7 +4,7 @@ const sharp = require('sharp')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
 const router = new express.Router()
-const { sendWelcEmail, sendCancleEmail } = require('../emails/account')
+// const { sendWelcEmail, sendCancleEmail } = require('../emails/account')
 
 //********************************************************//
 //-----------------User Account Management----------------//
@@ -17,7 +17,7 @@ router.post('/users', async (req, res) => {
     try {
 
         await user.save()
-        sendWelcEmail(user.email, user.name)
+        // sendWelcEmail(user.email, user.name)
         const agent = req.header('User-Agent')
         const token = await user.generateAuthToken(agent)
 
@@ -185,12 +185,7 @@ router.delete('/users/me', auth, async (req, res) => {
 
     try {
 
-        // const user = await User.findByIdAndDelete(req.userInfo._id)
-
-        // if (!user) {
-        //     return res.status(404).send()
-        // }
-        sendCancleEmail(req.userInfo.email, req.userInfo.name)
+        // sendCancleEmail(req.userInfo.email, req.userInfo.name)
         await req.userInfo.remove()
         res.send(req.userInfo)
 

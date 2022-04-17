@@ -122,7 +122,6 @@ userSchema.virtual('userData', {
 })
 
 
-
 // Cnntrol sending response
 userSchema.methods.toJSON = function () {
 

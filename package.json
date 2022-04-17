@@ -11,7 +11,8 @@
     "start": "node src/index.js",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
-    "local": "/Users/Chakron.D/mongodb/bin/mongod.exe --dbpath=/Users/Chakron.D/mongodb-data"
+    "local": "/Users/Chakron.D/mongodb/bin/mongod.exe --dbpath=/Users/Chakron.D/mongodb-data",
+    "autopush": "git add . && git commit -m 'autopush' && git push origin main && git push heroku"
   },
   "jest": {
     "testEnvironment": "node"

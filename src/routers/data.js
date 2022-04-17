@@ -17,9 +17,11 @@ router.post('/data', auth, async (req, res) => {
         
         if (VData) {
             VData.dataArray = await VData.dataArray.concat({
-                'recTime': req.body.dataArray[0].recTime,
-                'Humidity': req.body.dataArray[0].Humidity,
-                'Temperature': req.body.dataArray[0].Temperature
+                recTime: new Date(Date.now() + (7*60*60*1000)),
+                ...req.body.dataArray[0]
+                // 'recTime': req.body.dataArray[0].recTime,
+                // 'Humidity': req.body.dataArray[0].Humidity,
+                // 'Temperature': req.body.dataArray[0].Temperature
             })
             await VData.save()
             return res.status(201).send()
@@ -45,11 +47,10 @@ router.patch('/data/real', auth, async (req, res) => {
 
     try {
 
-        const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id },
+        const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id, userAgent: req.userAgent },
             {
-                recTime: req.body.recTime,
-                Humidity: req.body.Humidity,
-                Temperature: req.body.Temperature
+                recTime: new Date(Date.now() + (7*60*60*1000)),
+                ...req.body
 
             }, {
             new: true
@@ -58,7 +59,8 @@ router.patch('/data/real', auth, async (req, res) => {
         if (!VData) {
             const data = new RTData({
                 ...req.body,
-                owner: req.userInfo._id
+                owner: req.userInfo._id,
+                userAgent: req.userAgent
             })
             await data.save()
             res.status(201).send()
@@ -70,7 +72,7 @@ router.patch('/data/real', auth, async (req, res) => {
 
 
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send()
     }
 
 })
