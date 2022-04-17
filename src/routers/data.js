@@ -18,7 +18,7 @@ router.post('/data', auth, async (req, res) => {
 
         if (VData) {
             VData.dataArray = await VData.dataArray.concat({
-                // recTime: new Date(Date.now() + (7*60*60*1000)),
+                recTime: new Date(Date.now() + (7*60*60*1000)),
                 ...req.body.dataArray[0]
                 // 'recTime': req.body.dataArray[0].recTime,
                 // 'Humidity': req.body.dataArray[0].Humidity,

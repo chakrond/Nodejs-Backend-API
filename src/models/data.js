@@ -13,8 +13,7 @@ const dataSchema = new mongoose.Schema({
         // Option 1
         recTime: {
             type: Date,
-            trim: true,
-            default: new Date(Date.now() + (7*60*60*1000))
+            trim: true
         },
         Humidity: {
             type: Number,
