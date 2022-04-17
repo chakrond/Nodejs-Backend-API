@@ -5,10 +5,9 @@ const converTime = require('../utils/convertTime')
 const RTdataSchema = new mongoose.Schema({
 
     // Option 1
-    recTime: {
+    recTime: { // // use defalut in model record will create only once, no update
         type: Date,
-        trim: true,
-        default: new Date(Date.now() + (7*60*60*1000))
+        trim: true
     },
     Humidity: {
         type: Number,

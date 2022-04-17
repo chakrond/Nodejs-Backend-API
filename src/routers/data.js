@@ -18,7 +18,7 @@ router.post('/data', auth, async (req, res) => {
 
         if (VData) {
             VData.dataArray = await VData.dataArray.concat({
-                recTime: new Date(Date.now() + (7*60*60*1000)),
+                recTime: new Date(Date.now() + (7*60*60*1000)), // use defalut in model record will create only once, no update
                 ...req.body.dataArray[0]
                 // 'recTime': req.body.dataArray[0].recTime,
                 // 'Humidity': req.body.dataArray[0].Humidity,
@@ -50,7 +50,7 @@ router.patch('/data/real', auth, async (req, res) => {
 
         const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id, userAgent: req.userAgent },
             {
-                // recTime: new Date(Date.now() + (7*60*60*1000)),
+                recTime: new Date(Date.now() + (7*60*60*1000)), // use defalut in model record will create only once, no update
                 ...req.body
 
             }, {

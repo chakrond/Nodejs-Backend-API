@@ -11,7 +11,7 @@ const dataSchema = new mongoose.Schema({
     },
     dataArray: [{
         // Option 1
-        recTime: {
+        recTime: { // // use defalut in model record will create only once, no update
             type: Date,
             trim: true
         },
