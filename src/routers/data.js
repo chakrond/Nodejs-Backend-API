@@ -4,6 +4,7 @@ const Data = require('../models/data')
 const RTData = require('../models/RTdata')
 const router = new express.Router()
 const Errorlogging = require('../utils/errorlogging')
+const converTime = require('../utils/convertTime')
 
 //********************************************//
 //-----------------Data Method----------------//
@@ -13,11 +14,11 @@ router.post('/data', auth, async (req, res) => {
 
     try {
 
-        const VData = await Data.findOne({ recDate: req.body.recDate, owner: req.userInfo._id })
-        
+        const VData = await Data.findOne({ recDate: converTime(7), owner: req.userInfo._id })
+
         if (VData) {
             VData.dataArray = await VData.dataArray.concat({
-                recTime: new Date(Date.now() + (7*60*60*1000)),
+                // recTime: new Date(Date.now() + (7*60*60*1000)),
                 ...req.body.dataArray[0]
                 // 'recTime': req.body.dataArray[0].recTime,
                 // 'Humidity': req.body.dataArray[0].Humidity,
@@ -49,7 +50,7 @@ router.patch('/data/real', auth, async (req, res) => {
 
         const VData = await RTData.findOneAndUpdate({ owner: req.userInfo._id, userAgent: req.userAgent },
             {
-                recTime: new Date(Date.now() + (7*60*60*1000)),
+                // recTime: new Date(Date.now() + (7*60*60*1000)),
                 ...req.body
 
             }, {

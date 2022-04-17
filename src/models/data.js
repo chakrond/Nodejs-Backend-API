@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const converTime = require('../utils/convertTime')
 
 const dataSchema = new mongoose.Schema({
 
@@ -6,13 +7,14 @@ const dataSchema = new mongoose.Schema({
     recDate: {
         type: Date,
         trim: true,
-        default: new Date(Date.now() + (7*60*60*1000))
+        default: converTime(7)
     },
     dataArray: [{
         // Option 1
         recTime: {
             type: Date,
             trim: true,
+            default: new Date(Date.now() + (7*60*60*1000))
         },
         Humidity: {
             type: Number,
